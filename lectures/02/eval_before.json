@@ -1,0 +1,273 @@
+{
+  "summary": {
+    "label": "before",
+    "n": 29,
+    "format_rate": 0.9655172413793104,
+    "content_rate": 0.10344827586206896,
+    "both_rate": 0.10344827586206896,
+    "seconds": 77.8
+  },
+  "rows": [
+    {
+      "question": "Briefly explain AI engineering.",
+      "raw": "{\"answer\": \"AI engineering is the technical field of designing, building, evaluating, and operating useful applications and systems using pretrained foundation models (mainly LLMs) as components. It focuses on selecting models, connecting them to data and tools, and iterating on evaluation and improvement, rather than building models from scratch.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Token?",
+      "raw": "{\"answer\": \"Token is the smallest unit an LLM uses to process text. Text is split into fragments of words or characters. API charges, rate limits, and context window sizes are often counted in tokens. Tokenization varies by language; for example, Japanese tends to require more tokens per character than English.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Prompt.",
+      "raw": "{\"answer\": \"A prompt is a set of instructions, questions, or a set of rules that a Large Language Model (LLM) uses to generate a response. It acts as the 'brain' or 'command center' of the AI, defining the context, persona, constraints, and output format to ensure the model follows specific guidelines.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Hallucination?",
+      "raw": "{\"answer\": \"Hallucination is the phenomenon of an LLM generating plausible content that is factually incorrect or nonexistent. It is more likely when asked about things the model does not know, such as recent information or organization- or course-specific details.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain API key.",
+      "raw": "{\"answer\": \"An API key is a secret string that identifies the person calling an API. If it leaks, someone else can consume your usage allowance, so do not put it directly in code, commit it, or paste it into chat. In this course, register it as a Codespaces secret and read it through the GEMINI_API_KEY environment variable.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is GitHub Codespaces?",
+      "raw": "{\"answer\": \"GitHub Codespaces is a cloud development environment provided by GitHub. It allows users to open VS Code in a browser and immediately use an environment configured by the repository. Personal accounts have a monthly free allowance; if you do not stop the Codespace when idle, it continues consuming that allowance.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Codespaces secret.",
+      "raw": "{\"answer\": \"A secret value registered in your GitHub account settings is passed as an environment variable when you start Codespaces for a selected repository. If registered while a Codespace is running, restart the Codespace.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Pull Request (PR)?",
+      "raw": "{\"answer\": \"A Pull Request (PR) is a mechanism for requesting that changes from one branch be merged into another. It supports reviewing differences, comments, and displaying automated test results. Submit work for this course as a PR from your working branch to main within your own fork.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Code completion.",
+      "raw": "{\"answer\": \"Code completion is a feature in AI-powered code editors that suggests code to follow partially written code or comments. It allows users to accept suggestions with a Tab key or similar action. However, these suggestions may be incorrect, so users are required to read and understand them before accepting.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Fine-tuning?",
+      "raw": "{\"answer\": \"Fine-tuning is a process where a pretrained model is retrained on a specific dataset or task to improve its performance on that particular domain. It is suitable for teaching output format, tone, or behavior in a specific domain.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain PEFT.",
+      "raw": "{\"answer\": \"PEFT stands for Parameter-Efficient Fine-Tuning. It is a technique used to fine-tune large language models (LLMs) by training only a small subset of parameters (LoRA stands for Low-Rank Adaptation) or a small set of added parameters (QLoRA stands for Quantized LoRA) instead of all parameters. This approach significantly reduces GPU memory and storage requirements, making it suitable for deploying models on edge devices or for training",
+      "format_ok": false,
+      "format_reason": "json_error: JSONDecodeError",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is QLoRA?",
+      "raw": "{\"answer\": \"QLoRA is a method that saves memory by quantizing base-model weights to, for example, 4 bits, then trains with LoRA. This lets smaller GPUs handle larger models.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Learning rate.",
+      "raw": "{\"answer\": \"The learning rate is a hyperparameter that determines the magnitude of the step taken by the model during each training update. A smaller learning rate results in slower progress but can lead to more stable training, while a larger learning rate can accelerate convergence but may cause instability or overfitting.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Hugging Face Hub?",
+      "raw": "{\"answer\": \"Hugging Face Hub is a platform for sharing and downloading public models and datasets. It is used to obtain open-weight models and publish LoRA adapters.\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": true,
+      "both_ok": true,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Agent loop.",
+      "raw": "{\"answer\": \"The Agent loop is a continuous process where an agent receives input, executes tool calls to retrieve information, and returns results back to the agent. This cycle repeats until the agent provides a final answer. Multiple LLM calls within this loop can significantly impact response time, cost, and rate limits.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Structured output?",
+      "raw": "{\"answer\": \"Structured output is a mechanism for receiving model outputs according to specified types or a JSON schema. This makes programmatic postprocessing easier.\", \"needs_review\": false}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Pi.",
+      "raw": "{\"answer\": \"Pi is a popular open-source coding agent that runs in the terminal. It has minimal features and a minimal system prompt, designed for users to extend. Version 1.0 was released in October 2026.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is MCP (Model Context Protocol)?",
+      "raw": "{\"answer\": \"Model Context Protocol (MCP) is an open standard protocol connecting AI applications to external tools and data sources. Tools exposed through an MCP server can be used in a common way from compatible agents and editors (MCP clients). In Lecture 05, you will experience this by turning glossary search into an MCP server.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Human-in-the-loop.",
+      "raw": "{\"answer\": \"Human-in-the-loop is a process where human operators or agents review and approve automated operations before they proceed, ensuring that the final output is correct and meets specific requirements. In the context of Pydantic AI, tools with the `requires_approval=True` parameter enable this feature, allowing users to manually confirm actions like writing or sending data to prevent errors or unauthorized changes.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is answer.md?",
+      "raw": "{\"answer\": \"The file `answer.md` is the file for recording exercise and homework results for each AIE2026 lecture. It contains the level attempted, what you did, results, and observations.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Default model.",
+      "raw": "{\"answer\": \"The Default model is the standard model for AIE2026 exercises and homework, chosen with free-tier rate limits and stable course operation in mind.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is MCP client?",
+      "raw": "{\"answer\": \"The MCP client is the component that connects to MCP servers, passes their tools to the model, and calls tools as directed by the model. Agent programs (Pydantic AI's MCPToolset) and editors or applications such as Copilot Chat, Claude Desktop, and Cursor can serve as clients.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain mcpServers configuration.",
+      "raw": "{\n\"answer\": \"The mcpServers configuration file defines the list of MCP (Model Context Protocol) servers to use. For each server, you specify a name and a startup command (stdio) or destination URL (HTTP). This allows Claude Desktop, Cursor, and Pydantic AI to read the same format, which is central to the MCP experience.\",\n\"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is the best Python library for machine learning?",
+      "raw": "{\"answer\": \"None of the provided FAQ content mentions specific Python libraries for machine learning.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "How do I build a GUI in Python?",
+      "raw": "{\"answer\": \"Building a GUI in Python typically involves using libraries like Tkinter, PyQt, or PySide. For example, Tkinter is a popular choice for simple GUIs, while PyQt provides a more modern and powerful interface for complex applications.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "Who is the instructor for this course?",
+      "raw": "{\"answer\": \"Confirmation is needed\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": true,
+      "both_ok": true,
+      "gold_needs_review": true
+    },
+    {
+      "question": "When is the final assignment deadline for this course?",
+      "raw": "{\"answer\": \"Confirmation is needed\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": true,
+      "both_ok": true,
+      "gold_needs_review": true
+    },
+    {
+      "question": "How do I deploy a web app in Python?",
+      "raw": "{\"answer\": \"There is no FAQ provided in the text to answer this question.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "What is the fastest sorting algorithm in Python?",
+      "raw": "{\"answer\": \"Insertion Sort\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    }
+  ]
+}

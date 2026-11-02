@@ -1,0 +1,76 @@
+{
+  "config": {
+    "base_model": "Qwen/Qwen3.5-0.8B",
+    "revision": "2fc06364715b967f1860aea9cf38778875588b17",
+    "seed": 42,
+    "num_train_epochs": 20,
+    "warmup_steps": 6,
+    "lr": 0.0002,
+    "lora_r": 16,
+    "lora_alpha": 32,
+    "max_seq_len": 512,
+    "max_new_tokens": 96,
+    "gen": {
+      "do_sample": false
+    }
+  },
+  "versions": {
+    "transformers": "5.18.0",
+    "peft": "0.21.1",
+    "trl": "1.14.2",
+    "torch": "2.11.0+cu130"
+  },
+  "method": "LoRA (no quantization)",
+  "before": {
+    "label": "before",
+    "n": 29,
+    "format_rate": 0.9655172413793104,
+    "content_rate": 0.10344827586206896,
+    "both_rate": 0.10344827586206896,
+    "seconds": 77.8
+  },
+  "after": {
+    "label": "after",
+    "n": 29,
+    "format_rate": 1.0,
+    "content_rate": 1.0,
+    "both_rate": 1.0,
+    "seconds": 142.7
+  },
+  "regressed": [],
+  "knowledge": [
+    {
+      "Question": "What is AI engineering?",
+      "In FAQ": true,
+      "Before-training classification": "needs_review",
+      "Before-training output": "{\"answer\": \"AI engineering is the application of artificial intelligence techniques to solve complex engineering problems, such as designing new materials, optimizing manufacturing processes, and developing autonomous systems. It combines computer science, mathematics, and engineering to create intelligent systems that can learn, adapt, and make decisions based on data and algorithms.\", \"needs_review\": true}",
+      "After-training classification": "asserted",
+      "After-training output": "{\"answer\": \"AI application development that connects to external data, runs agents, processes large amounts of data, and generates outputs. It combines AI capabilities with programming and database skills.\", \"needs_review\": false}"
+    },
+    {
+      "Question": "Briefly explain LoRA.",
+      "In FAQ": true,
+      "Before-training classification": "needs_review",
+      "Before-training output": "{\"answer\": \"LoRA stands for Low-Rank Adaptation, a technique used in Generative AI to fine-tune large language models (LLMs) with minimal computational cost. It works by taking a small, pre-trained model and applying a small, trainable weight matrix to it, allowing the model to learn new patterns while retaining the original structure. This is particularly useful for tasks like fine-tuning or adapting models to specific domains.\", \"needs_review\": true}",
+      "After-training classification": "asserted",
+      "After-training output": "{\"answer\": \"A method for reducing the number of parameters a model fits by separating the base model weights from trainable weights (LoRA). This saves memory and computation while still allowing fine-tuning on a small dataset or a few prompts.\", \"needs_review\": false}"
+    },
+    {
+      "Question": "What is the best Python library for machine learning?",
+      "In FAQ": false,
+      "Before-training classification": "needs_review",
+      "Before-training output": "{\"answer\": \"None of the provided FAQs explicitly state which Python library is the 'best' for machine learning. However, the most popular and widely used library is scikit-learn, which is generally considered the standard for many machine learning tasks.\", \"needs_review\": true}",
+      "After-training classification": "asserted",
+      "After-training output": "{\"answer\": \"The Pydantic AI library is the best Python library for machine learning. It integrates closely with AIE2026, allowing you to write models in Pydantic types and receive prompts in Python. It is the main library for the Lecture 02 exercises.\", \"needs_review\": false}"
+    },
+    {
+      "Question": "Who is the instructor for this course?",
+      "In FAQ": false,
+      "Before-training classification": "needs_review",
+      "Before-training output": "{\"answer\": \"The instructor for this course is not provided in the available FAQ.\", \"needs_review\": true}",
+      "After-training classification": "asserted",
+      "After-training output": "{\"answer\": \"AIE2026 homework and submission instructor\", \"needs_review\": false}"
+    }
+  ],
+  "executed_training_myself": true
+}
