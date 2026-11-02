@@ -1,0 +1,273 @@
+{
+  "summary": {
+    "label": "before_4bit",
+    "n": 29,
+    "format_rate": 0.9655172413793104,
+    "content_rate": 0.0,
+    "both_rate": 0.0,
+    "seconds": 111.0
+  },
+  "rows": [
+    {
+      "question": "Briefly explain AI engineering.",
+      "raw": "{\"answer\": \"AI engineering is the technical field of designing, building, evaluating, and operating useful applications and systems using pretrained foundation models (mainly LLMs) as components. It focuses on selecting models, connecting them to data and tools, and iterating on evaluation and improvement, rather than building models from scratch.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Token?",
+      "raw": "{\"answer\": \"Token is the smallest unit an LLM uses to process text. Text is split into fragments of words or characters. API charges, rate limits, and context window sizes are often counted in tokens.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Prompt.",
+      "raw": "{\"answer\": \"A prompt is a set of instructions or a set of questions that a model uses to generate a response. It serves as the core input that defines the model's behavior, purpose, and constraints.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Hallucination?",
+      "raw": "{\"answer\": \"Hallucination is the phenomenon of an LLM generating plausible content that is factually incorrect or nonexistent.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain API key.",
+      "raw": "{\"answer\": \"An API key is a secret string that identifies the person calling an API. It is used to authenticate requests and access resources, but it should not be committed to code or shared directly with others.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is GitHub Codespaces?",
+      "raw": "{\"answer\": \"GitHub Codespaces is a cloud development environment provided by GitHub that allows developers to open VS Code in a browser and immediately use an environment configured by the repository. It is designed to make it easier to deploy and run code in a cloud environment.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Codespaces secret.",
+      "raw": "{\"answer\": \"A secret value registered in your GitHub account settings is passed as an environment variable when you start Codespaces for a selected repository. It is passed as an environment variable when you start Codespaces for a selected repository. When registering it, select the repository you will use (your own fork). If registered while a Codespace is running, restart the Codespace.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Pull Request (PR)?",
+      "raw": "{\"answer\": \"A Pull Request (PR) is a mechanism for requesting that changes from one branch be merged into another. It supports reviewing differences, comments, and displaying automated test results. Submit work for this course as a PR from your working branch to main within your own fork.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Code completion.",
+      "raw": "{\"answer\": \"Code completion is a feature in AI-powered development tools that allows developers to suggest code completions based on the context of a partially written or commented block of code. It typically uses a feature like Tab or a similar action to accept suggestions, and the system may provide incorrect suggestions, requiring developers to read and understand them before accepting.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Fine-tuning?",
+      "raw": "{\"answer\": \"Fine-tuning is a process of training a pretrained model on data suited to a specific task or format. It is suitable for teaching output format, tone, or behavior in a specific domain.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain PEFT.",
+      "raw": "{\"answer\": \"PEFT stands for Parameter-Efficient Fine-Tuning. It is a method for fine-tuning large language models (LLMs) that uses a small subset of the model's parameters or a small set of added parameters instead of all parameters. This allows for significant reductions in GPU memory and storage requirements.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is QLoRA?",
+      "raw": "{\"answer\": \"QLoRA is a technique that quantizes base-model weights to a smaller size (e.g., 4 bits) to reduce memory usage and allow larger models to run on smaller GPUs. It is often used in conjunction with LoRA (Low-Rank Adaptation) to improve training efficiency.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Learning rate.",
+      "raw": "{\"answer\": \"The learning rate is a hyperparameter that determines the magnitude of the step size in the gradient descent update. A small learning rate makes the training process more stable and converges faster, while a large learning rate can cause the model to diverge or oscillate.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Hugging Face Hub?",
+      "raw": "{\"answer\": \"Hugging Face Hub is a platform for sharing and downloading public models and datasets. It is used to obtain open-weight models and publish LoRA adapters.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Agent loop.",
+      "raw": "{\"answer\": \"The Agent loop is a continuous process where an agent executes a sequence of steps: it receives input, executes any tool calls returned by the model, and returns results back to the model. This cycle repeats until the model provides a final answer.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is Structured output?",
+      "raw": "{\"answer\": \"Structured output is a data format used in Pydantic AI to define the output type of a model. It allows users to specify a Pydantic model in output_type, enabling programmatic postprocessing to be easier.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Pi.",
+      "raw": "{\"answer\": \"Pi is a widely used mathematical constant, often referred to as the 'pi' of the number 3.5709000000000002. It is the only mathematical constant that is not a rational number, meaning it cannot be expressed as a simple fraction. Pi is approximately equal to 3.1415926535897932384626",
+      "format_ok": false,
+      "format_reason": "json_error: JSONDecodeError",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is MCP (Model Context Protocol)?",
+      "raw": "{\"answer\": \"Model Context Protocol (MCP) is a protocol that allows Model Context Agents to communicate with external tools and data sources. It enables agents to access tools via an MCP server, which exposes tools through an MCP client. This allows agents to use tools in a common way from compatible agents and editors.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Human-in-the-loop.",
+      "raw": "{\"answer\": \"Human-in-the-loop is a process where human operators or humans interact with a system to provide feedback or validation, which then influences the system's behavior or operations.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is answer.md?",
+      "raw": "{\"answer\": \"answer.md is the file for recording exercise and homework results for each AIE2026 lecture.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain Default model.",
+      "raw": "{\"answer\": \"The FAQ does not provide information about a specific 'Default model' for AIE2026 exercises or homework. It only mentions that the standard model is 'gemini-3.5-flash-lite' and notes that users can switch models using the AIE_MODEL environment variable.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is MCP client?",
+      "raw": "{\"answer\": \"MCP client is a component that connects to MCP servers, passes their tools to the model, and calls tools as directed by the model.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "Briefly explain mcpServers configuration.",
+      "raw": "{\"answer\": \"The mcpServers configuration file lists MCP servers to use, specifying a name and a startup command (stdio) or destination URL (HTTP) for each server. This allows the application to initialize and run the MCP servers.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": false
+    },
+    {
+      "question": "What is the best Python library for machine learning?",
+      "raw": "{\"answer\": \"None of the provided FAQ information contains specific details about the best Python library for machine learning.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "How do I build a GUI in Python?",
+      "raw": "{\"answer\": \"No\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "Who is the instructor for this course?",
+      "raw": "{\n\"answer\": \"The provided FAQ does not contain information about the instructor for this course.\",\n\"needs_review\": true\n}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "When is the final assignment deadline for this course?",
+      "raw": "{\n\"answer\": \"The final assignment deadline for this course is not specified in the provided FAQ.\",\n\"needs_review\": true\n}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "How do I deploy a web app in Python?",
+      "raw": "{\"answer\": \"No specific information is provided in the FAQ to answer this question.\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    },
+    {
+      "question": "What is the fastest sorting algorithm in Python?",
+      "raw": "{\"answer\": \"Quicksort\", \"needs_review\": true}",
+      "format_ok": true,
+      "format_reason": "",
+      "content_ok": false,
+      "both_ok": false,
+      "gold_needs_review": true
+    }
+  ]
+}
