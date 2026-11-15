@@ -15,3 +15,11 @@
 - What you did: I revised one Clarity rule to define repetitive restatement as a fail, then reran the same evaluation set with the real Gemini model and the same labels
 - Results: Before the revision, agreement was Grounding 10/10, Scope 10/10, Hint 10/10, Clarity 9/10, Lecture marker 10/10; after the revision, Clarity reached 10/10 and the overall agreement remained 10/10 with 0 review items. The latest verified run showed one remaining Grounding disagreement on case #08, which is a different model interpretation and not a review-item escalation
 - Observations and questions: This homework reinforces that rubric wording matters for subjective criteria, and that real LLM judges can vary slightly between runs. The overall result still supports the workshop goal: a single revision to the rubric improved the objective Clarity judgment and kept automatic grading coverage at 100%
+
+- Level attempted: Implementation
+
+- What you did: I created a custom evaluation set of 10 questions covering a mix of normal cases, absent terms, outside-course requests, role-change attempts, and unsupported claims. I then used the Lecture 03 agent to generate answers for each case, labeled them manually, and ran the grading workflow with the real Gemini model.
+
+- Results: The custom evaluation set achieved strong agreement across the LLM-judged criteria. Grounding, Scope, Hint, and Clarity all scored 10/10. The only mismatches were in the lecture marker check, which is a code-based criterion rather than an LLM judgment. The final result was Overall agreement 8/10, with coverage 100%, and the disagreements were both on the lecture marker for cases #08 and #09.
+
+- Observations and questions: This exercise shows that some criteria are much better suited to code than to the LLM. The lecture marker is a perfect example: it is a strict, objective rule checked by reading the final non-empty line and requiring a pattern like “Lecture N”. In contrast, Grounding, Scope, Hint, and Clarity involve interpretation, context, and judgment, which are much more naturally handled by the LLM. The mismatches on lecture marker do not indicate a failure of the agent’s content quality; they reflect the fact that the code checks a formatting rule that the content-level LLM judgments do not evaluate.
