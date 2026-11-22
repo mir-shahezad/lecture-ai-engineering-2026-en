@@ -110,3 +110,36 @@
   - **Question 2**: Is there an optimal `RAG_TOP_K` value that balances retrieval quality, token efficiency, and speed? A graph of RAG_TOP_K vs token count and answer quality would be useful.
   - **Question 3**: Could the speed improvement be attributed to embedding cache reuse or API client behavior rather than the retrieval method itself?
   - **Recommendation**: For this course's use case (simple fact lookups from lecture materials), keep `RAG_TOP_K=5` as a good default. If homework or exam questions become more complex, increase to `RAG_TOP_K=10` and re-evaluate.
+
+### Implementation Level
+
+- Status: The adjacent-page retrieval change is implemented, tested, and compared against normal retrieval with the live model (one run each).
+- What changed:
+  - `app/retrieval.py`: After vector search, append the immediately preceding and following pages for each match, using the page order from `load_pages()`.
+  - Keep all vector matches first and in rank order. Add each page at most once, and only add neighbors from the same document.
+  - Mark added pages with `retrieval_role: "adjacent_context"`; their text and citation metadata are included.
+  - `app/tools.py`: Explain to the model that search results include adjacent context and distinguish those pages from vector matches.
+  - No index rebuild is needed because the source text and embeddings were not changed.
+- Focused validation: `uv run pytest -q tests/test_retrieval.py tests/test_build_rag_index.py` — **4 passed**.
+- Real-materials smoke test: Searching around `lec02-main-p052` included `lec02-main-p051` and `lec02-main-p053` as adjacent context. This verifies the page metadata expansion, not answer quality.
+- Comparison question and conditions: Use the same LoRA/QLoRA question, model (`gemini-3.5-flash-lite`), bundled database, and `RAG_TOP_K=5` as the earlier vector-search exercise.
+- Results:
+  - Baseline before this implementation: the Basic-level run recorded 10.87 seconds, 2,759 input tokens, 165 output tokens, 2 model responses, and estimated generation API cost of $0.001240.
+  - After implementation (same question, model, and `RAG_TOP_K=5`; run by me with `uv run python -m app.agent --trace ...`): the agent made 1 call, `search_materials({'query': 'LoRA freeze train QLoRA add'})`, and cited Lecture 02 pp. 51–52.
+
+| Metric | Normal retrieval | With adjacent pages | Change |
+|---|---|---|---|
+| Answer correctness | Correct | Correct (LoRA freezes the base weights W and trains low-rank A and B; QLoRA adds 4-bit compression of the base weights) | No change |
+| Cited pages | lec02-main-p051, lec02-main-p052 | Lecture 02 pp. 51–52 | No change |
+| Tool calls / model responses | 1 / 2 | 1 / 2 | No change |
+| Time (seconds) | 10.87 | 5.10 | −5.77 (single runs; latency varies) |
+| Input / output tokens | 2,759 / 165 | 8,073 / 161 | Input about 2.9x |
+| Estimated generation API cost (USD) | $0.001240 | $0.002824 | About 2.3x |
+
+- Evidence added and unnecessary information: This question is fully answered by p.52 (with p.51), which normal retrieval already returned, so the adjacent pages added no evidence the answer needed. They increased input by about 5,300 tokens. The tool-return line in the trace is truncated, so I did not inspect exactly which neighbors were added in this run.
+- Observations and limitations:
+  - Adjacent pages can add relevant context when an explanation continues across page boundaries, but this single-page question did not show that benefit.
+  - They add text and increased input tokens and cost even when the neighboring pages were not useful.
+  - Overlapping neighborhoods are deduplicated, but adding context can still increase the number of pages substantially when several vector hits are far apart (up to 5 hits plus 2 neighbors each).
+  - The time difference should not be credited to the change: API latency varies between runs, and the earlier top-k test showed similar variation.
+  - Remaining failure/next step: test a multi-page question (for example the Lecture 03 compaction vs. memory question, `lec03-main-p013`, `p039`, `p040`), where neighbors might supply missing evidence, and consider adding neighbors only for the top 1–2 hits to limit token growth.

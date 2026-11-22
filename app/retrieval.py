@@ -140,7 +140,33 @@ def search(query: str) -> list[dict]:
                    vec_distance_cosine(embedding, ?) AS distance
             FROM chunks ORDER BY distance, page_id LIMIT ?
         """, (sqlite_vec.serialize_float32(vector), RAG_TOP_K))
-        return [dict(row) for row in rows]
+        return include_adjacent_pages([dict(row) for row in rows])
+
+
+def include_adjacent_pages(results: list[dict], pages: list[dict] | None = None) -> list[dict]:
+    """Append unseen neighboring pages from the same document to vector-search results."""
+    pages = load_pages(RAG_SOURCE) if pages is None else pages
+    pages_by_document = defaultdict(list)
+    page_positions = {}
+    for page in pages:
+        page_positions[page["page_id"]] = (page["document_id"], len(pages_by_document[page["document_id"]]))
+        pages_by_document[page["document_id"]].append(page)
+
+    expanded = list(results)
+    seen = {result["page_id"] for result in results}
+    for result in results:
+        location = page_positions.get(result["page_id"])
+        if location is None:
+            continue
+        document_id, position = location
+        document_pages = pages_by_document[document_id]
+        for neighbor_position in (position - 1, position + 1):
+            if 0 <= neighbor_position < len(document_pages):
+                neighbor = document_pages[neighbor_position]
+                if neighbor["page_id"] not in seen:
+                    expanded.append({**neighbor, "retrieval_role": "adjacent_context"})
+                    seen.add(neighbor["page_id"])
+    return expanded
 
 
 def search_graph(query: str) -> dict:

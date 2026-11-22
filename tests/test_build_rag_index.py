@@ -34,7 +34,9 @@ def test_built_index_can_be_searched(materials, monkeypatch):
     result = build_index(source, database, embedder=embed)
     assert result["pages"] == 2  # Lecture 05 materials are excluded from the search scope
     assert all("Section" in text and "Page" in text for text in texts)
+    load_pages = retrieval.load_pages
     monkeypatch.setattr(retrieval, "RAG_DB", database)
+    monkeypatch.setattr(retrieval, "load_pages", lambda *_: load_pages(source))
     monkeypatch.setattr(retrieval, "embed_text", lambda *_: [1, 0])
     hits = retrieval.search("Question")
     assert [h["page_id"] for h in hits] == ["lec01-main-p001", "lec02-main-p001"]
