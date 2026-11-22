@@ -81,9 +81,10 @@ def get_lecture_summary(lecture: int) -> str:
     return path.read_text(encoding="utf-8")
 
 def search_materials(query: str) -> str:
-    """Search the main materials for Lectures 01–03 and return relevant page text, titles, and page numbers.
+    """Search the main materials for Lectures 01–03 and return matching pages with adjacent-page context.
 
-    Use query to specify what you want to look up.
+    Results include text, titles, page numbers, and citation metadata when available. Adjacent pages are marked
+    as context rather than vector matches. Use query to specify what you want to look up.
     """
     from google.genai.errors import APIError
     import sqlite3
