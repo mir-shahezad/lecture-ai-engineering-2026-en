@@ -126,21 +126,38 @@ def open_index(path: Path):
         db.close()
 
 
+def vector_hits(db: sqlite3.Connection, vector: list[float], limit: int) -> list[dict]:
+    """Return the pages whose embeddings are closest to the query vector."""
+    columns = {column["name"] for column in db.execute("PRAGMA table_info(chunks)")}
+    citation = "citation," if "citation" in columns else ""
+    rows = db.execute(f"""
+        SELECT page_id, document_id, lecture, document_title, section, title, page, content,
+               {citation}
+               vec_distance_cosine(embedding, ?) AS distance
+        FROM chunks ORDER BY distance, page_id LIMIT ?
+    """, (sqlite_vec.serialize_float32(vector), limit))
+    return [dict(row) for row in rows]
+
+
+def page_distances(db: sqlite3.Connection, vector: list[float], page_ids: list[str]) -> dict[str, float]:
+    """Return the cosine distance from the query vector to each indexed page in page_ids."""
+    if not page_ids:
+        return {}
+    marks = ",".join("?" * len(page_ids))
+    rows = db.execute(
+        f"SELECT page_id, vec_distance_cosine(embedding, ?) AS distance FROM chunks WHERE page_id IN ({marks})",
+        (sqlite_vec.serialize_float32(vector), *page_ids),
+    )
+    return {row["page_id"]: row["distance"] for row in rows}
+
+
 def search(query: str) -> list[dict]:
     """Embed the query and return up to RAG_TOP_K similar pages."""
     if not isinstance(query, str) or not query.strip():
         raise ValueError("The search query is empty.")
     with open_index(RAG_DB) as db:
         vector = embed_text(query.strip(), "RETRIEVAL_QUERY")
-        columns = {column["name"] for column in db.execute("PRAGMA table_info(chunks)")}
-        citation = "citation," if "citation" in columns else ""
-        rows = db.execute(f"""
-            SELECT page_id, document_id, lecture, document_title, section, title, page, content,
-                   {citation}
-                   vec_distance_cosine(embedding, ?) AS distance
-            FROM chunks ORDER BY distance, page_id LIMIT ?
-        """, (sqlite_vec.serialize_float32(vector), RAG_TOP_K))
-        return include_adjacent_pages([dict(row) for row in rows])
+        return include_adjacent_pages(vector_hits(db, vector, RAG_TOP_K))
 
 
 def include_adjacent_pages(results: list[dict], pages: list[dict] | None = None) -> list[dict]:
@@ -169,8 +186,11 @@ def include_adjacent_pages(results: list[dict], pages: list[dict] | None = None)
     return expanded
 
 
-def search_graph(query: str) -> dict:
-    """Start with vector search, then expand candidates through adjacent pages and shared terms."""
+def expand_graph(seeds: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Follow adjacent pages and shared terms from seed hits.
+
+    Returns the seed pages and every reachable candidate page, ordered by hop count and term rarity.
+    """
     pages = {page["page_id"]: page for page in load_pages(RAG_SOURCE)}
     graph = json.loads(RAG_GRAPH.read_text(encoding="utf-8"))
     nodes = {node["id"]: node for node in graph["nodes"]
@@ -182,7 +202,6 @@ def search_graph(query: str) -> dict:
             adjacent[a].add(b)
             adjacent[b].add(a)
 
-    seeds = [hit for hit in search(query) if hit["page_id"] in pages][:min(GRAPH_START_K, GRAPH_MAX_RESULTS)]
     seed_ids = {seed["page_id"] for seed in seeds}
     results, candidates = [], {}
     for rank, seed in enumerate(seeds):
@@ -211,9 +230,42 @@ def search_graph(query: str) -> dict:
                              "path": [{"id": n, "title": nodes[n]["title"]} for n in route]}
                 if neighbor not in candidates or priority < candidates[neighbor][0]:
                     candidates[neighbor] = (priority, candidate)
-    expanded = [candidate for _, candidate in sorted(candidates.values())]
+    return results, [candidate for _, candidate in sorted(candidates.values())]
+
+
+def graph_seeds(hits: list[dict]) -> list[dict]:
+    """Keep the top vector hits that belong to the selected materials."""
+    page_ids = {page["page_id"] for page in load_pages(RAG_SOURCE)}
+    return [hit for hit in hits if hit["page_id"] in page_ids and "distance" in hit][:min(GRAPH_START_K, GRAPH_MAX_RESULTS)]
+
+
+def search_graph(query: str) -> dict:
+    """Start with vector search, then expand candidates through adjacent pages and shared terms."""
+    results, expanded = expand_graph(graph_seeds(search(query)))
     return {"seeds": results, "expanded": expanded[:max(0, GRAPH_MAX_RESULTS - len(results))],
             "max_hops": GRAPH_HOPS}
+
+
+def rank_by_distance(candidates: list[dict], distances: dict[str, float], limit: int) -> list[dict]:
+    """Order candidates by similarity to the query, dropping pages without an embedding."""
+    scored = [{**c, "distance": distances[c["page_id"]]} for c in candidates if c["page_id"] in distances]
+    return sorted(scored, key=lambda c: (c["distance"], c["page_id"]))[:max(0, limit)]
+
+
+def search_graph_ranked(query: str) -> dict:
+    """Use the graph for recall and the stored page embeddings for precision.
+
+    Expand from the top vector hits through adjacent pages and shared terms, then keep only the
+    candidates closest to the query instead of those reached through the rarest terms.
+    """
+    if not isinstance(query, str) or not query.strip():
+        raise ValueError("The search query is empty.")
+    with open_index(RAG_DB) as db:
+        vector = embed_text(query.strip(), "RETRIEVAL_QUERY")
+        results, candidates = expand_graph(graph_seeds(vector_hits(db, vector, RAG_TOP_K)))
+        distances = page_distances(db, vector, [c["page_id"] for c in candidates])
+    expanded = rank_by_distance(candidates, distances, GRAPH_MAX_RESULTS - len(results))
+    return {"seeds": results, "expanded": expanded, "max_hops": GRAPH_HOPS, "ranking": "query similarity"}
 
 
 

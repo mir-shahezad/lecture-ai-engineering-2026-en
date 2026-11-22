@@ -1,4 +1,25 @@
-from app.retrieval import include_adjacent_pages
+from app.retrieval import expand_graph, include_adjacent_pages, rank_by_distance
+
+
+def test_rank_by_distance_orders_by_similarity_and_drops_unindexed_pages():
+    candidates = [{"page_id": "a"}, {"page_id": "b"}, {"page_id": "c"}]
+
+    ranked = rank_by_distance(candidates, {"a": 0.5, "b": 0.1}, limit=5)
+
+    assert [page["page_id"] for page in ranked] == ["b", "a"]
+    assert ranked[0]["distance"] == 0.1
+    assert [page["page_id"] for page in rank_by_distance(candidates, {"a": 0.5, "b": 0.1}, limit=1)] == ["b"]
+
+
+def test_graph_reaches_example_pages_through_shared_term():
+    seed = {"page_id": "lec03-main-p013", "distance": 0.1}
+
+    seeds, candidates = expand_graph([seed])
+
+    reached = {page["page_id"]: page for page in candidates}
+    assert seeds[0]["page_id"] == "lec03-main-p013"
+    assert {"lec03-main-p039", "lec03-main-p040"} <= reached.keys()
+    assert reached["lec03-main-p039"]["hops"] == 2
 
 
 def test_include_adjacent_pages_keeps_hits_and_deduplicates_context():

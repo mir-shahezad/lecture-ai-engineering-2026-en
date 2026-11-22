@@ -143,3 +143,28 @@
   - Overlapping neighborhoods are deduplicated, but adding context can still increase the number of pages substantially when several vector hits are far apart (up to 5 hits plus 2 neighbors each).
   - The time difference should not be credited to the change: API latency varies between runs, and the earlier top-k test showed similar variation.
   - Remaining failure/next step: test a multi-page question (for example the Lecture 03 compaction vs. memory question, `lec03-main-p013`, `p039`, `p040`), where neighbors might supply missing evidence, and consider adding neighbors only for the top 1–2 hits to limit token growth.
+
+### Advanced Level
+
+- Level attempted: Advanced (the Basic and Implementation entries above are additional work, not required).
+- Question (multi-page, evidence across sections): "In the Lecture 03 examples, how does compaction differ from memory across sessions? Do all daily notes go into long-term memory?" Expected evidence: `lec03-main-p013`, `lec03-main-p039`, `lec03-main-p040`.
+- Problem with the existing Graph mode: it expands from the top 3 vector hits through `next_page` and `mentions` (shared term) edges, then picks extra pages by hop count and term rarity, not by relevance to the question. Shared terms do not guarantee a page answers the question.
+- Design (`--graph-ranked`, "graph for recall, embeddings for precision"):
+  - Data and storage: unchanged. `graph.json` (page and term nodes; `next_page` and `mentions` edges used for traversal) and the existing `index.sqlite3` page embeddings. No index rebuild and no extra API calls (the query is embedded once).
+  - Retrieval: embed the query once; take the top 3 vector hits as seeds; expand up to 2 hops through adjacent pages and shared terms with no early cut-off; look up the stored distance from the query to every candidate page; keep the candidates closest to the query (seeds plus expanded, at most 10 pages).
+  - Why: the graph can reach pages that are not near the question in embedding space (a graph test confirms `p039` and `p040` are reachable from `p013` in 2 hops via the `memory` term), and ranking by embedding distance should keep the relevant ones and drop pages that merely share a term.
+  - Code: `app/retrieval.py` (`vector_hits`, `page_distances`, `expand_graph`, `graph_seeds`, `rank_by_distance`, `search_graph_ranked`; existing `search` and `search_graph` behavior kept), `app/tools.py` (`search_graph_ranked`), `app/agent.py` (`--graph-ranked` and instructions), `tests/test_retrieval.py` (2 tests). Full test suite: 25 passed.
+- Comparison conditions: same question, model (`gemini-3.5-flash-lite`), and bundled database; one run each. Basic RAG is the default vector search, which includes the adjacent-page change from the Implementation level. The model wrote its own search query each time, so the queries were not identical.
+
+| Method | Search query chosen by the model | Answer correct? | Cited evidence | Time (s) | Input / output tokens | Model responses | Cost (USD) |
+|---|---|---|---|---|---|---|---|
+| Basic RAG (`search_materials`) | `compaction memory across sessions daily notes long-term memory` | Yes | translated PDF pp. 38–39, 39, 40, 65 | 9.95 | 7,468 / 248 | 2 | $0.001762 |
+| Graph (`search_graph`) | `Lecture 03 compaction memory across sessions daily notes long-term memory` | Yes | "Slide 39 and Slide 40" (no page citation labels) | 10.51 | 4,693 / 276 | 2 | $0.002098 |
+| Graph ranked (`search_graph_ranked`) | `compaction memory daily notes long term memory Lecture 03` | Yes | none given | 11.23 | 4,682 / 219 | 2 | $0.001952 |
+
+- Results: all three answers were correct and substantively the same: compaction summarizes history within a session, memory persists across sessions in external storage, and not all daily notes go to long-term memory (OpenClaw nightly review keeps only what passes a threshold; one-off lookups stay in daily notes).
+- What did not improve: the new method did not give a better answer, better evidence, or lower time/cost than the original Graph. Input tokens (4,682 vs 4,693) and time are within normal run-to-run variation. Compared with basic RAG it used fewer input tokens (about 37% fewer) but had a slightly higher cost and time here, so I cannot credit the ranking for any gain; part of the token difference may come from basic RAG returning adjacent pages.
+- Failure observed: the graph-ranked answer gave no page citations, although the instructions require them. Graph answered with slide numbers only. Basic RAG gave the clearest page-level citations.
+- Limits of this comparison: one run per method, different model-chosen queries (basic RAG and graph-ranked both seeded from `lec03-main-p065`, while Graph seeded from `p039`), and the trace truncates the tool return, so I did not inspect which expanded pages were returned or whether `p013` was retrieved. This question may simply be easy enough that every method succeeds.
+- Would I adopt it? Not on this evidence. It is a small, low-cost change (no extra API calls), but it showed no measurable benefit. Before adopting it I would test questions where basic vector search misses a page (for example evidence only reachable through a shared term), print the returned page IDs and distances, and repeat each method several times with a fixed query.
+- Verified by me: ran all three commands above and read the answers and usage lines; the earlier offline tests passed. What I did not verify: the contents of the tool returns, or the ranking quality of the expanded pages.
